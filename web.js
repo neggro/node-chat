@@ -59,9 +59,9 @@ var http = require('http'),
                 res.end(data, 'utf8');
             });
         }
-    }).listen(port),
+    }).listen(port);
 
-    io = require('socket.io').listen(server);
+/*    io = require('socket.io').listen(server);
 
 io.of('/room')
     .on('connection', function (socket) {
@@ -89,4 +89,4 @@ io.of('/room')
                 roomLeaved: data
             }));
         });
-    });
+    });*/
