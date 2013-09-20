@@ -16,7 +16,7 @@ app.listen(port);*/
 var http = require('http'),
     url = require('url'),
     fs = require('fs'),
-    port = process.env.VMC_APP_PORT || 1337,
+    port = process.env.PORT || 1337,
 
     // Base Server Stuff
     server = http.createServer(function (req, res) {
@@ -61,7 +61,11 @@ var http = require('http'),
         }
     }).listen(port),
 
-    io = require('socket.io').listen(server);
+    io = require('socket.io')
+        .configure(function () {
+            io.set('transports', ['xhr-polling']);
+            io.set('polling duration', 10);
+        }).listen(server);
 
 io.of('/room')
     .on('connection', function (socket) {
