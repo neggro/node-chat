@@ -59,9 +59,13 @@ var http = require('http'),
                 res.end(data, 'utf8');
             });
         }
-    }).listen(port);
+    }).listen(port),
 
-/*    io = require('socket.io').listen(server);
+    io = require('socket.io')
+        .configure(function () {
+            io.set('transports', ['xhr-polling']);
+            io.set('polling duration', 10);
+        }).listen(server);
 
 io.of('/room')
     .on('connection', function (socket) {
@@ -89,4 +93,4 @@ io.of('/room')
                 roomLeaved: data
             }));
         });
-    });*/
+    });
