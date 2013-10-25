@@ -2,7 +2,8 @@ var express = require('express'),
     routes = require('./routes'),
     http = require('http'),
     app = express(),
-    server = app.listen(3000),
+    port = process.env.VMC_APP_PORT || 3000,
+    server = app.listen(port),
     io = require('socket.io').listen(server);
 
 app.configure(function(){
@@ -51,4 +52,4 @@ io.of('/room')
         });
     });
 
-    console.log("Express server listening on port 3000");
+    console.log('Express server listening on port: ' + port);
