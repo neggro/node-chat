@@ -2,7 +2,7 @@ var express = require('express'),
     routes = require('./routes'),
     http = require('http'),
     app = express(),
-    port = process.env.VMC_APP_PORT || 3000,
+    port = process.env.VMC_APP_PORT || 1337,
     server = app.listen(port),
     io = require('socket.io').listen(server);
 
