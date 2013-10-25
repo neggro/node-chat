@@ -63,6 +63,11 @@ var http = require('http'),
 
     io = require('socket.io');
 
+/*io.configure(function () {
+    io.set('transports', ['xhr-polling']);
+    io.set('polling duration', 10);
+});*/
+
 io.of('/room')
     .on('connection', function (socket) {
         var joinedRoom = null;
