@@ -1,0 +1,36 @@
+body {
+    background: url(../images/bg-footer-noise.jpg);
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+p {
+    margin: 0 0 5px;
+    padding: 0;
+}
+.example {
+    margin: 15px auto;
+    width: 622px;
+}
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+#room-form {
+    display: none;
+}
+.textbox {
+    background: #666;
+    border: 1px solid #999;
+    border-radius: 6px;
+    height: 300px;
+    margin: -10px 0 10px;
+    padding: 10px;
+    width: 600px;
+}
+
+.textbox div {
+    height: 300px;
+    overflow: auto;
+    width: 600px
+}
