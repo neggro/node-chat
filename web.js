@@ -61,7 +61,7 @@ var http = require('http'),
         }
     }).listen(port),
 
-    io = require('socket.io');
+    io = require('socket.io').listen(server);
 
 /*io.configure(function () {
     io.set('transports', ['xhr-polling']);
