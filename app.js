@@ -31,7 +31,11 @@ io.of('/room')
             socket.join(data);
             joinedRoom = data;
             socket.emit('joined', 'you\'ve joined ' + data);
-            socket.broadcast.to(joinedRoom).send('someone joined room');
+            socket.broadcast.to(joinedRoom).send(JSON.stringify({
+                "msg": "this is the message",
+                "from": "From the fucking server..."
+            }));
+
         });
         socket.on('fromclient', function (data) {
             if (joinedRoom) {

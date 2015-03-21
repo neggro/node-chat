@@ -38,16 +38,18 @@
             $('#room-form').on('submit', function (e) {
                 e.preventDefault();
                 if (joined) {
-                    var msg = $roomText.val();
-                    $roomText.val('');
-                    $chatScreen.append(
-                        messageTemplate.replace('{from}', 'From me')
-                            .replace('{message}', msg)
-                    )[0].scrollTop = 999999;
-                    room.emit('fromclient', {
-                        msg: msg,
-                        from: nickName
-                    });
+                    var msg = $.trim($roomText.val());
+                    if (msg) {
+                        $roomText.val('');
+                        $chatScreen.append(
+                            messageTemplate.replace('{from}', 'From me')
+                                .replace('{message}', msg)
+                        )[0].scrollTop = 999999;
+                        room.emit('fromclient', {
+                            msg: msg,
+                            from: nickName
+                        });
+                    }
                 } else {
                     $chatScreen.append(
                         messageTemplate.replace('{from}', 'From server')
@@ -61,7 +63,8 @@
             room.on('connect', function () {
                 $('#room-form').css('display', 'block');
                 $chatScreen.append(
-                    messageTemplate.replace('{from}', 'From server')
+                    messageTemplate
+                        .replace('{from}', 'From server')
                         .replace('{message}', nickName + ' connected.')
                 )[0].scrollTop = 999999;
                 $nickName.val(nickName).attr('readonly', true);
