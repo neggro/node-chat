@@ -5,29 +5,29 @@ body {
     font-size: 12px;
 }
 p {
-    margin: 0 0 5px;
+    line-height: 14px;
+    margin: 0 0 8px;
     padding: 0;
 }
 .example {
-    margin: 15px auto;
-    max-width: 720px;
+    bottom: 10px;
+    left: 10px;
     min-width: 300px;
-}
-@media (max-width: 740px) {
-  .example {
-      margin: 15px 10px;
-  }
-}
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}/*
 .title {
     font-size: 18px;
     font-weight: bold;
-}
+}*/
 #nick-name-form {
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
     display: flex;
+    margin-bottom: 10px;
 }
 #nick-name-form input {
     flex: auto;
@@ -39,7 +39,12 @@ p {
     margin-right: 5px;
 }
 #room-form {
+    bottom: 0;
     display: none;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
 }
 #room-selector {
     display: -webkit-flex;
@@ -69,13 +74,16 @@ p {
 .textbox {
     background: #666;
     border: 1px solid #999;
-    border-radius: 4px;
-    height: 300px;
-    margin: -10px 0 10px;
+    border-radius: 3px;
+    bottom: 40px;
+    left: 0;
     padding: 10px;
+    position: absolute;
+    right: 0;
+    top: 100px;
 }
 
 .textbox div {
-    height: 300px;
+    height: 100%;
     overflow: auto;
 }
