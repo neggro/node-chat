@@ -1,59 +1,124 @@
 var express = require('express'),
+    http = require('http'),
+    socketIO = require('socket.io'),
+    favicon = require('serve-favicon'),
+    path = require('path'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+
     routes = require('./routes'),
     http = require('http'),
+
     app = express(),
+
     port = process.env.PORT || 1337,
-    server = app.listen(port),
-    io = require('socket.io').listen(server);
 
-app.configure(function () {
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.static(__dirname + '/public'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
+    server = http.Server(app),
+    io = socketIO(server);
+
+server.listen(port, function () {
+    console.log('Server listening at port %d', port);
 });
 
-app.configure('development', function () {
-    app.use(express.errorHandler());
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', routes);
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.get('/', routes.index);
+// error handlers
 
-io.of('/room')
-    .on('connection', function (socket) {
-        console.log('connection!');
-        var joinedRoom = null;
-        socket.on('join room', function (data) {
-            socket.join(data);
-            joinedRoom = data;
-            socket.emit('joined', 'you\'ve joined ' + data);
-            socket.broadcast.to(joinedRoom).send(JSON.stringify({
-                "msg": "this is the message",
-                "from": "From the fucking server..."
-            }));
-
-        });
-        socket.on('fromclient', function (data) {
-            if (joinedRoom) {
-                socket.broadcast.to(joinedRoom).send(JSON.stringify(data));
-            } else {
-                socket.send(
-                    'You\'re not joined a room.' +
-                    'Select a room and then push join.'
-                );
-            }
-        });
-        socket.on('leave', function (data) {
-            socket.leave(data);
-            socket.emit('leave room', JSON.stringify({
-                success: true,
-                roomLeaved: data
-            }));
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
         });
     });
+}
 
-console.log('Express server listening on port: ' + port);
+// production error handler
+// no stacktraces leaked to user
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+// io.of('/room')
+io.sockets.on('connection', function (socket) {
+
+    var joinedRoom = null;
+
+    socket.on('join room', function (data) {
+
+        joinedRoom = data.room;
+        socket.join(joinedRoom);
+
+        socket.emit('joined', 'you\'ve joined ' + joinedRoom);
+
+        socket.broadcast.to(joinedRoom).send(JSON.stringify({
+            "msg": data.userName + " has joined",
+            "from": "From server"
+        }));
+
+    });
+
+    socket.on('fromclient', function (data) {
+
+        if (joinedRoom) {
+            socket.broadcast.to(joinedRoom).send(JSON.stringify(data));
+        } else {
+            socket.send(
+                'You\'re not joined a room.' +
+                'Select a room and then push join.'
+            );
+        }
+    });
+
+    socket.on('leave', function (data) {
+
+        // data.room is the name of the room (i.e. room 1)
+        socket.broadcast.to(joinedRoom).send(JSON.stringify({
+            "msg": data.userName + " left the room",
+            "from": "From server"
+        }));
+
+        socket.leave(data.room, function (err) {
+
+            if (!err) {
+
+                joinedRoom = null;
+
+                socket.emit('leave room', JSON.stringify({
+                    success: true
+                }));
+            } else {
+                console.log('Error on leave: ', err);
+            }
+        });
+
+    });
+});
+
+module.exports = app;

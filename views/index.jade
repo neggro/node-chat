@@ -2,17 +2,19 @@ extends layout
 
 block content
     section#room.example
-        h2 Room Event Example
+        h3 Room Event Example
         form#nick-name-form.form-inline
             input(type='text', id='nick-name', class='span3', placeholder='Nickname')
-            button(type="submit" id="room-connect-btn" class="connect btn") Connect
+            input(type="submit", id="room-connect-btn", class="connect btn", value="Connect")
         #room-content.textbox
             #chat-screen
         form#room-form.form-inline
-            select#room-select
-                option(value='first room') first room
-                option(value='second room') second room
-                option(value='third room') third room
-            input(type="button", value="Join", id="room-join", class="btn")
-            input(type="text", id="room-text", placeholder="Enter a message")
-            input(type="submit", value="Submit", class="btn btn-primary")
+            #room-selector
+                select#room-select
+                    option(value='first room') first room
+                    option(value='second room') second room
+                    option(value='third room') third room
+                input(type="button", value="Join", id="room-join", class="btn")
+            #message-box
+                input(type="text", id="room-text", placeholder="Enter a message")
+                input(type="submit", value="Submit", class="btn btn-primary")

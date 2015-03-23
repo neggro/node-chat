@@ -10,27 +10,72 @@ p {
 }
 .example {
     margin: 15px auto;
-    width: 622px;
+    max-width: 720px;
+    min-width: 300px;
+}
+@media (max-width: 740px) {
+  .example {
+      margin: 15px 10px;
+  }
 }
 .title {
     font-size: 18px;
     font-weight: bold;
 }
+#nick-name-form {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+}
+#nick-name-form input {
+    flex: auto;
+}
+#nick-name-form input[type="text"] {
+    flex-grow: 3;
+}
+#nick-name {
+    margin-right: 5px;
+}
 #room-form {
+    display: none;
+}
+#room-selector {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+}
+#room-form input,
+#room-form select {
+    flex: auto;
+}
+#room-form select {
+    flex-grow: 2;
+}
+#room-form input[type="text"] {
+    flex-grow: 4;
+}
+#room-form input[type="button"],
+#room-form input[type="submit"] {
+    flex-grow: 1;
+    margin-left: 5px;
+}
+#message-box {
     display: none;
 }
 .textbox {
     background: #666;
     border: 1px solid #999;
-    border-radius: 6px;
+    border-radius: 4px;
     height: 300px;
     margin: -10px 0 10px;
     padding: 10px;
-    width: 600px;
 }
 
 .textbox div {
     height: 300px;
     overflow: auto;
-    width: 600px
 }

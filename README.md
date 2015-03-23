@@ -1,6 +1,6 @@
 node-chat
 =========
 
-Test node.js, express.js, socket.io and jade templates.
+Test node.js, express.js, socket.io and jade templates (also a bit of bootstrap and jQuery).
 
-http://neggro.herokuapp.com/
+http://node-chat-io.herokuapp.com/
